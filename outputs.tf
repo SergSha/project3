@@ -1,0 +1,61 @@
+
+output "dbs-info" {
+  description = "General information about created VMs"
+  value = {
+    for vm in data.yandex_compute_instance.dbs :
+    vm.name => {
+      ip_address     = vm.network_interface.*.ip_address
+      nat_ip_address = vm.network_interface.*.nat_ip_address
+    }
+  }
+}
+
+output "iscsi-servers-info" {
+  description = "General information about created VMs"
+  value = {
+    for vm in data.yandex_compute_instance.iscsi-servers :
+    vm.name => {
+      ip_address     = vm.network_interface.*.ip_address
+      nat_ip_address = vm.network_interface.*.nat_ip_address
+    }
+  }
+}
+
+output "bes-info" {
+  description = "General information about created VMs"
+  value = {
+    for vm in data.yandex_compute_instance.bes :
+    vm.name => {
+      ip_address     = vm.network_interface.*.ip_address
+      nat_ip_address = vm.network_interface.*.nat_ip_address
+    }
+  }
+}
+
+output "lbs-info" {
+  description = "General information about created VMs"
+  value = {
+    for vm in data.yandex_compute_instance.lbs :
+    vm.name => {
+      ip_address     = vm.network_interface.*.ip_address
+      nat_ip_address = vm.network_interface.*.nat_ip_address
+    }
+  }
+}
+
+output "consuls-info" {
+  description = "General information about created VMs"
+  value = {
+    for vm in data.yandex_compute_instance.consuls :
+    vm.name => {
+      ip_address     = vm.network_interface.*.ip_address
+      nat_ip_address = vm.network_interface.*.nat_ip_address
+    }
+  }
+}
+/*
+output "loadbalancer-info" {
+  description = "General information about loadbalancer"
+  value = data.yandex_lb_network_load_balancer.mylb.*
+}
+*/

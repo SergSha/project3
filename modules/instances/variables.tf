@@ -56,7 +56,7 @@ variable "memory" {
 
 variable "core_fraction" {
   description = "Core fraction, default 100%"
-  default     = 100
+  default     = 50
   type        = number
 }
 
@@ -83,36 +83,11 @@ variable "allow_stopping_for_update" {
 }
 
 # yc compute image list --folder-id standard-images
-
-#variable "image_id" {
-#  description = "Default image ID Ubuntu 20"
-#  default     = "fd879gb88170to70d38a" # ubuntu-20-04-lts-v20220404
-#  type        = string
-#}
-
-#variable "image_id" {
-#  description = "Default image ID Debian 11"
-#  default     = "fd83u9thmahrv9lgedrk" # debian-11-v20230814
-#  type        = string
-#}
-
-#variable "image_id" {
-#  description = "Default image ID AlmaLinux 9"
-#  default     = "fd8cvn7c0lb5ub3ip3kn" # almalinux-9-v20230911
-#  type        = string
-#}
-
 variable "image_id" {
-  description = "Default image ID AlmaLinux 8"
-  default     = "fd84itfojin92kj38vmb" # almalinux-8-v20230925
+  description = "Default image ID AlmaLinux 9"
+  default     = "fd877fuskeokm2plco89" # almalinux-9-v20240108
   type        = string
 }
-
-#variable "image_id" {
-#  description = "Default image ID CentOS 7"
-#  default     = "fd85qh2iveusn11jcup6" # centos-7-v20230911
-#  type        = string
-#}
 
 variable "nat" {
   type    = bool
@@ -149,5 +124,11 @@ variable "ssh_public_key" {
 variable "ssh_private_key" {
   type        = string
   description = "cloud-config ssh private key"
+  default = ""
+}
+
+variable "user-data" {
+  type        = string
+  description = "user data"
   default = ""
 }

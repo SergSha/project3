@@ -19,3 +19,9 @@ wp_db_name: "wordpress"
 wp_db_user: "wordpress"
 wp_db_pass: "wordpresspassword"
 wp_db_host: "{{ hostvars['db-01'].ansible_host }}"
+
+# Define proxysql user for proxysql server
+proxysql_user: proxysql
+proxysql_password: proxysql@Otus1234
+sbuser: sbuser
+sbuser_password: sbuser@Otus1234

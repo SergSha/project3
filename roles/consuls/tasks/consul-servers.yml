@@ -1,3 +1,4 @@
+---
 - name: Consul Server | Install Packages
   ansible.builtin.dnf: 
     name:
@@ -59,4 +60,5 @@
   ansible.builtin.systemd:
     name: consul
     state: started
+    enabled: true
     daemon_reload: true

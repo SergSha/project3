@@ -1,15 +1,16 @@
 ---
 - name: Include nftables service
   include_tasks: nftables.yml
+  when: inventory_hostname in groups['consuls']
 
 - name: Include consul-servers
   include_tasks: consul-servers.yml
-  when: inventory_hostname in groups['consul_servers']
+  when: inventory_hostname in groups['consuls']
 
 - name: Include consul-clients
   include_tasks: consul-clients.yml
-  when: inventory_hostname in (groups['nginx_servers'] + groups['backend_servers'])
+  when: inventory_hostname in (groups['lbs'] + groups['bes'])
 
 - name: Include consul-templates
   include_tasks: consul-templates.yml
-  when: inventory_hostname in groups['nginx_servers']
+  when: inventory_hostname in groups['lbs']

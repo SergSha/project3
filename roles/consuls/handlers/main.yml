@@ -3,8 +3,10 @@
   ansible.builtin.systemd:
     name: consul
     state: reloaded
+    enabled: true
 
 - name: reload consul-template
   ansible.builtin.systemd:
     name: consul-template
     state: reloaded
+    enabled: true

@@ -10,9 +10,9 @@ addresses {
 }
 encrypt = "IOBhqXLxqoz1MqoofIYRdqhpCr7Oaf/+AH1klnOAb3E="
 raft_protocol = 3
-bootstrap_expect = {{ groups.consul_servers | length }}
+bootstrap_expect = {{ groups.consuls | length }}
 {% set host_list = [] %}
-{% for i in groups.consul_servers %}
+{% for i in groups.consuls %}
 {% if inventory_hostname != i %}
 {{ host_list.append(hostvars[i].ansible_host) }}
 {%- endif %}

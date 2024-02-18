@@ -1,3 +1,4 @@
+---
 - name: Consul Template | Install Packages
   ansible.builtin.dnf: 
     name:

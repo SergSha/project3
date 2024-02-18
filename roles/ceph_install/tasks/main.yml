@@ -1,10 +1,11 @@
 ---
 - name: Include nftables service
   include_tasks: nftables.yml
+  when: inventory_hostname in groups['cephs']
 
 - name: Include selinux setting
   include_tasks: selinux.yml
-  when: ansible_os_family == "RedHat"
+  when: inventory_hostname in groups['cephs']
 
 - name: Include install
   include_tasks: install.yml

@@ -32,51 +32,44 @@
   roles:
     - { role: chrony, tags: chrony_tag }
 
-- hosts: jump_servers
-  #remote_user: cloud-user
+- hosts: dbs
+  #remote_user: almalinux
   become: true
   serial: 5
   roles:
-    - { role: jump-servers, tags: jump-servers_tag }
+    - { role: dbs, tags: dbs_tag }
 
-- hosts: db_servers
-  #remote_user: cloud-user
+- hosts: cephs,bes
+  #remote_user: almalinux
   become: true
   serial: 5
   roles:
-    - { role: db-servers, tags: db-servers_tag }
+    - { role: ceph_install, tags: ceph_install_tag }
 
-- hosts: iscsi_servers
-  #remote_user: cloud-user
+- hosts: cephs
+  #remote_user: almalinux
   become: true
   serial: 5
   roles:
-    - { role: iscsi-servers, tags: iscsi-servers_tag }
+    - { role: ceph_setup, tags: ceph_setup_tag }
 
-- hosts: backend_servers
-  #remote_user: cloud-user
+- hosts: bes
+  #remote_user: almalinux
   become: true
   serial: 5
   roles:
-    - { role: backend-servers, tags: backend-servers_tag }
-    - { role: wordpress, tags: wordpress_tag }
+    - { role: bes, tags: bes_tag }
+#    - { role: wordpress, tags: wordpress_tag }
 
-#- hosts: haproxy_servers
-#  #remote_user: cloud-user
-#  become: true
-#  serial: 5
-#  roles:
-#    - { role: haproxy-servers, tags: haproxy-servers_tag }
-
-- hosts: nginx_servers
-  #remote_user: cloud-user
+- hosts: lbs
+  #remote_user: almalinux
   become: true
   serial: 5
   roles:
-    - { role: nginx-servers, tags: nginx-servers_tag }
+    - { role: lbs, tags: lbs_tag }
 
-- hosts: consul_servers,nginx_servers,backend_servers
+- hosts: consuls,lbs,bes
   become: true
   serial: 5
   roles:
-    - { role: consul, tags: consul_tag }
+    - { role: consuls, tags: consul_tag }

@@ -1,3 +1,4 @@
+---
 - name: Consul Client | Install Packages
   ansible.builtin.dnf: 
     name:
@@ -64,4 +65,3 @@
     state: restarted
     enabled: true
     daemon_reload: true
-

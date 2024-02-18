@@ -132,6 +132,7 @@ module "dbs" {
   #subnet_id      = yandex_vpc_subnet.subnet.id
   vm_user        = local.vm_user
   ssh_public_key = local.ssh_public_key
+  user-data      = "#cloud-config\nssh_authorized_keys:\n- ${tls_private_key.ceph_key.public_key_openssh}"
   secondary_disk = {}
   depends_on     = [yandex_compute_disk.disks]
 }
@@ -146,7 +147,7 @@ data "yandex_compute_instance" "dbs" {
 module "cephs" {
   source         = "./modules/instances"
   count          = local.ceph_count
-  vm_name        = "iscsi-${format("%02d", count.index + 1)}"
+  vm_name        = "ceph-${format("%02d", count.index + 1)}"
   vpc_name       = local.vpc_name
   #folder_id      = yandex_resourcemanager_folder.folders["lab-folder"].id
   network_interface = {
@@ -162,6 +163,8 @@ module "cephs" {
   #subnet_id      = yandex_vpc_subnet.subnet.id
   vm_user        = local.vm_user
   ssh_public_key = local.ssh_public_key
+  user-data      = count.index != 0 ? "#cloud-config\nssh_authorized_keys:\n- ${tls_private_key.ceph_key.public_key_openssh}" : "#cloud-config\nhostname: ceph-01\nwrite_files:\n- path: /home/${local.vm_user}/.ssh/id_rsa\n  defer: true\n  permissions: 0600\n  owner: ${local.vm_user}:${local.vm_user}\n  encoding: b64\n  content: ${base64encode("${tls_private_key.ceph_key.private_key_openssh}")}\n- path: /home/${local.vm_user}/.ssh/id_rsa.pub\n  defer: true\n  permissions: 0600\n  owner: ${local.vm_user}:${local.vm_user}\n  encoding: b64\n  content: ${base64encode("${tls_private_key.ceph_key.public_key_openssh}")}"
+
   secondary_disk = {
     for disk in yandex_compute_disk.disks :
     disk.name => {
@@ -169,7 +172,7 @@ module "cephs" {
       #"auto_delete" = true
       #"mode"        = "READ_WRITE"
     }
-    if "${substr(disk.name,0,6)}" == "ceph-${format("%02d", count.index + 1)}"
+    if "${substr(disk.name,0,7)}" == "ceph-${format("%02d", count.index + 1)}"
   }
   depends_on = [yandex_compute_disk.disks]
 }
@@ -184,7 +187,7 @@ data "yandex_compute_instance" "cephs" {
 module "bes" {
   source         = "./modules/instances"
   count          = local.be_count
-  vm_name        = "backend-${format("%02d", count.index + 1)}"
+  vm_name        = "be-${format("%02d", count.index + 1)}"
   vpc_name       = local.vpc_name
   #folder_id      = yandex_resourcemanager_folder.folders["lab-folder"].id
   network_interface = {
@@ -200,6 +203,7 @@ module "bes" {
   #subnet_id      = yandex_vpc_subnet.subnet.id
   vm_user        = local.vm_user
   ssh_public_key = local.ssh_public_key
+  user-data      = "#cloud-config\nssh_authorized_keys:\n- ${tls_private_key.ceph_key.public_key_openssh}"
   secondary_disk = {}
   depends_on = [yandex_compute_disk.disks]
 }
@@ -214,14 +218,14 @@ data "yandex_compute_instance" "bes" {
 module "lbs" {
   source         = "./modules/instances"
   count          = local.lb_count
-  vm_name        = "nginx-${format("%02d", count.index + 1)}"
+  vm_name        = "lb-${format("%02d", count.index + 1)}"
   vpc_name       = local.vpc_name
   #folder_id      = yandex_resourcemanager_folder.folders["lab-folder"].id
   network_interface = {
     for subnet in yandex_vpc_subnet.subnets :
     subnet.name => {
       subnet_id = subnet.id
-      nat       = true
+      nat       =  count.index==0 ? true : false
     }
     if subnet.name == "lab-subnet" #|| subnet.name == "nginx-subnet"
   }
@@ -230,6 +234,7 @@ module "lbs" {
   #subnet_id      = yandex_vpc_subnet.subnet.id
   vm_user        = local.vm_user
   ssh_public_key = local.ssh_public_key
+  user-data      = ""
   secondary_disk = {}
   depends_on     = [yandex_compute_disk.disks]
 }
@@ -262,6 +267,7 @@ module "consuls" {
   #subnet_id      = yandex_vpc_subnet.subnet.id
   vm_user        = local.vm_user
   ssh_public_key = local.ssh_public_key
+  user-data      = ""
   secondary_disk = {}
   depends_on     = [yandex_compute_disk.disks]
 }
@@ -272,14 +278,6 @@ data "yandex_compute_instance" "consuls" {
   #folder_id  = yandex_resourcemanager_folder.folders["lab-folder"].id
   depends_on = [module.consuls]
 }
-
-#resource "yandex_compute_disk" "disks" {
-#  for_each  = local.disks
-#  name      = each.key
-#  #folder_id = yandex_resourcemanager_folder.folders["lab-folder"].id
-#  size      = each.value["size"]
-#  zone      = var.zone
-#}
 
 resource "yandex_compute_disk" "disks" {
   count     = local.ceph_count * local.disk_count
@@ -299,15 +297,15 @@ resource "yandex_compute_disk" "disks" {
 resource "local_file" "inventory_file" {
   content = templatefile("${path.module}/templates/inventory.tpl",
     {
-      dbs      = data.yandex_compute_instance.dbs
-      cephs   = data.yandex_compute_instance.cephs
-      bes = data.yandex_compute_instance.bes
-      lbs   = data.yandex_compute_instance.lbs
-      consuls  = data.yandex_compute_instance.consuls
-      remote_user     = local.vm_user
-      domain_name     = var.domain_name
-      domain_org      = var.domain_org
-      domain_token    = var.yc_token
+      dbs          = data.yandex_compute_instance.dbs
+      cephs        = data.yandex_compute_instance.cephs
+      bes          = data.yandex_compute_instance.bes
+      lbs          = data.yandex_compute_instance.lbs
+      consuls      = data.yandex_compute_instance.consuls
+      remote_user  = local.vm_user
+      domain_name  = var.domain_name
+      domain_org   = var.domain_org
+      domain_token = var.yc_token
     }
   )
   filename = "${path.module}/inventory.ini"
@@ -328,9 +326,9 @@ resource "tls_private_key" "ceph_key" {
   algorithm = "RSA"
   rsa_bits  = 2048
 }
-/*
-resource "yandex_lb_target_group" "webservers" {
-  name      = "webservers-group"
+
+resource "yandex_lb_target_group" "web-tg" {
+  name      = "web-group"
   region_id = "ru-central1"
   #folder_id = yandex_resourcemanager_folder.folders["lab-folder"].id
 
@@ -343,13 +341,13 @@ resource "yandex_lb_target_group" "webservers" {
   }
 }
 
-resource "yandex_lb_target_group" "dashboards" {
-  name      = "dashboards-group"
+resource "yandex_lb_target_group" "ceph-tg" {
+  name      = "ceph-group"
   region_id = "ru-central1"
   #folder_id = yandex_resourcemanager_folder.folders["lab-folder"].id
 
   dynamic "target" {
-    for_each = data.yandex_compute_instance.jump-servers[*].network_interface.0.ip_address
+    for_each = data.yandex_compute_instance.cephs[*].network_interface.0.ip_address
     content {
       subnet_id = yandex_vpc_subnet.subnets["lab-subnet"].id
       address   = target.value
@@ -362,24 +360,23 @@ resource "yandex_lb_network_load_balancer" "mylb" {
   #folder_id = yandex_resourcemanager_folder.folders["lab-folder"].id
 
   listener {
-    name = "webservers-listener"
+    name = "web-listener"
     port = 80
     external_address_spec {
       ip_version = "ipv4"
     }
   }
-
+  
   listener {
-    name = "dashboards-listener"
-    port = 5601
+    name = "ceph-listener"
+    port = 8443
     external_address_spec {
       ip_version = "ipv4"
     }
   }
   
   attached_target_group {
-    target_group_id = yandex_lb_target_group.webservers.id
-
+    target_group_id = yandex_lb_target_group.web-tg.id
     healthcheck {
       name = "tcp"
       tcp_options {
@@ -389,12 +386,11 @@ resource "yandex_lb_network_load_balancer" "mylb" {
   }
   
   attached_target_group {
-    target_group_id = yandex_lb_target_group.dashboards.id
-
+    target_group_id = yandex_lb_target_group.ceph-tg.id
     healthcheck {
       name = "tcp"
       tcp_options {
-        port = 5601
+        port = 8443
       }
     }
   }
@@ -405,70 +401,3 @@ data "yandex_lb_network_load_balancer" "mylb" {
   #folder_id = yandex_resourcemanager_folder.folders["lab-folder"].id
   depends_on = [yandex_lb_network_load_balancer.mylb]
 }
-*/
-/*
-resource "null_resource" "lbs" {
-
-  count = length(module.lbs)
-
-  # Changes to the instance will cause the null_resource to be re-executed
-  triggers = {
-    name = module.lbs[count.index].vm_name
-  }
-
-  
-  # Running the remote provisioner like this ensures that ssh is up and running
-  # before running the local provisioner
-
-  provisioner "remote-exec" {
-    inline = ["echo 'Wait until SSH is ready'"]
-  }
-
-  connection {
-    type        = "ssh"
-    user        = local.vm_user
-    private_key = file(local.ssh_private_key)
-    host        = "${module.lbs[count.index].instance_external_ip_address}"
-  }
-
-  # Note that the -i flag expects a comma separated list, so the trailing comma is essential!
-
-  provisioner "local-exec" {
-    command = "ansible-playbook -u '${local.vm_user}' --private-key '${local.ssh_private_key}' --become -i ./inventory.ini -l '${module.lbs[count.index].instance_external_ip_address},' provision.yml"
-    #command = "ansible-playbook provision.yml -u '${local.vm_user}' --private-key '${local.ssh_private_key}' --become -i '${element(module.lbs.nat_ip_address, 0)},' "
-  }
-  
-}
-*/
-/*
-resource "null_resource" "bes" {
-
-  count = length(module.bes)
-
-  # Changes to the instance will cause the null_resource to be re-executed
-  triggers = {
-    name = "${module.bes[count.index].vm_name}"
-  }
-
-  # Running the remote provisioner like this ensures that ssh is up and running
-  # before running the local provisioner
-
-  provisioner "remote-exec" {
-    inline = ["echo 'Wait until SSH is ready'"]
-  }
-
-  connection {
-    type        = "ssh"
-    user        = local.vm_user
-    private_key = file(local.ssh_private_key)
-    host        = "${module.bes[count.index].instance_external_ip_address}"
-  }
-
-  # Note that the -i flag expects a comma separated list, so the trailing comma is essential!
-
-  provisioner "local-exec" {
-    command = "ansible-playbook -u '${local.vm_user}' --private-key '${local.ssh_private_key}' --become -i '${module.bes[count.index].instance_external_ip_address},' provision.yml"
-    #command = "ansible-playbook provision.yml -u '${local.vm_user}' --private-key '${local.ssh_private_key}' --become -i '${element(module.bes.nat_ip_address, 0)},' "
-  }
-}
-*/

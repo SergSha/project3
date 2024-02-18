@@ -3,8 +3,8 @@
 %{ for db in dbs ~}
 ${ db["name"] } ansible_host=${ db.network_interface[0].ip_address } ip=${ db.network_interface[0].ip_address }
 %{ endfor ~}
-%{ for iscsi-server in iscsi-servers ~}
-${ iscsi-server["name"] } ansible_host=${ iscsi-server.network_interface[0].ip_address } ip=${ iscsi-server.network_interface[0].ip_address }
+%{ for ceph in cephs ~}
+${ ceph["name"] } ansible_host=${ ceph.network_interface[0].ip_address } ip=${ ceph.network_interface[0].ip_address }
 %{ endfor ~}
 %{ for be in bes ~}
 ${ be["name"] } ansible_host=${ be.network_interface[0].ip_address } ip=${ be.network_interface[0].ip_address }
@@ -16,14 +16,14 @@ ${ lb["name"] } ansible_host=${ lb.network_interface[0].ip_address } ip=${ lb.ne
 ${ consul["name"] } ansible_host=${ consul.network_interface[0].ip_address } ip=${ consul.network_interface[0].ip_address }
 %{ endfor ~}
 
-[db_servers]
+[dbs]
 %{ for db in dbs ~}
 ${ db["name"] }
 %{ endfor ~}
 
-[iscsi_servers]
-%{ for iscsi-server in iscsi-servers ~}
-${ iscsi-server["name"] }
+[cephs]
+%{ for ceph in cephs ~}
+${ ceph["name"] }
 %{ endfor ~}
 
 [bes]
@@ -52,4 +52,4 @@ token=${domain_token}
 org=${domain_org}
 
 [bes:vars]
-srv_name=wordpress
+srv_name=backend

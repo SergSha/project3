@@ -10,10 +10,10 @@ output "dbs-info" {
   }
 }
 
-output "iscsi-servers-info" {
+output "cephs-info" {
   description = "General information about created VMs"
   value = {
-    for vm in data.yandex_compute_instance.iscsi-servers :
+    for vm in data.yandex_compute_instance.cephs :
     vm.name => {
       ip_address     = vm.network_interface.*.ip_address
       nat_ip_address = vm.network_interface.*.nat_ip_address
@@ -53,9 +53,8 @@ output "consuls-info" {
     }
   }
 }
-/*
+
 output "loadbalancer-info" {
   description = "General information about loadbalancer"
   value = data.yandex_lb_network_load_balancer.mylb.*
 }
-*/

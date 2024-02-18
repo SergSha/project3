@@ -1,0 +1,79 @@
+{% for host in groups.dbs %} {{ hostvars[host].ansible_host }} {% endfor %}
+
+
+ceph osd pool set cephfs_data size 3
+ceph osd pool create cephfs_meta 256
+ceph osd pool set cephfs_meta size 3
+ceph fs new cephfs cephfs_meta cephfs_data
+
+
+
+
+
+The 'while' loops below pause between pools to allow all PGs to be created. 
+This is a safety mechanism to prevent saturating the Monitor nodes.
+
+while [ $(ceph -s | grep creating -c) -gt 0 ]; do echo -n .; sleep 1; done
+
+
+while [ $(ceph -s | grep HEALTH_OK -c) -lt 1 ]; do echo -n .; sleep 1; done
+
+
+
+ceph osd ls | wc -l
+
+while [ $(ceph osd ls | wc -l) -ne 9 ]; do echo -n .; sleep 1; done
+
+
+mount -t ceph admin@$(ceph fsid).cephfs=/ /mnt/cephfs/
+
+
+[root@be-01 ~]# mount | grep ceph
+admin@cf04ffde-cdb2-11ee-b922-d00d237be435.cephfs=/ on /mnt/cephfs type ceph (rw,relatime,seclabel,name=admin,secret=<hidden>,ms_mode=prefer-crc,acl,mon_addr=10.10.10.20:3300)
+[root@be-01 ~]# 
+
+
+
+[root@be-01 ~]# cat /etc/fstab 
+
+#
+# /etc/fstab
+# Created by anaconda on Wed Nov  9 10:15:27 2022
+#
+# Accessible filesystems, by reference, are maintained under '/dev/disk/'.
+# See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info.
+#
+# After editing this file, run 'systemctl daemon-reload' to update systemd
+# units generated from this file.
+#
+UUID=ceb11787-f80b-4377-859f-a83f14385537 /                       xfs     defaults        0 0
+admin@cf04ffde-cdb2-11ee-b922-d00d237be435.cephfs=/	/mnt/cephfs	ceph 	_netdev	0 0
+[root@be-01 ~]# 
+
+
+[root@ceph-02 ~]# cat /etc/ceph/ceph.conf 
+# minimal ceph.conf for cf04ffde-cdb2-11ee-b922-d00d237be435
+[global]
+	fsid = cf04ffde-cdb2-11ee-b922-d00d237be435
+	mon_host = [v2:10.10.10.20:3300/0,v1:10.10.10.20:6789/0] [v2:10.10.10.21:3300/0,v1:10.10.10.21:6789/0] [v2:10.10.10.15:3300/0,v1:10.10.10.15:6789/0]
+
+[root@ceph-02 ~]# 
+
+
+[root@ceph-02 ~]# cat /etc/ceph/ceph.client.admin.keyring 
+[client.admin]
+	key = AQBB4dBlwRgnFhAAFeXxfJL+haQcYKHrrG6MCg==
+	caps mds = "allow *"
+	caps mgr = "allow *"
+	caps mon = "allow *"
+	caps osd = "allow *"
+
+[root@ceph-02 ~]# 
+
+
+[root@be-01 ~]# mount | grep ceph
+admin@cf04ffde-cdb2-11ee-b922-d00d237be435.cephfs=/ on /mnt/cephfs type ceph (rw,relatime,seclabel,name=admin,secret=<hidden>,ms_mode=prefer-crc,acl,mon_addr=10.10.10.15:3300/10.10.10.20:3300/10.10.10.21:3300,_netdev)
+[root@be-01 ~]# 
+
+
+

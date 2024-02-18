@@ -38,7 +38,7 @@ http {
 
     upstream @consul {
         ip_hash;
-{% for item in groups.consul_servers %}
+{% for item in groups.consuls %}
         server {{ hostvars[item].ansible_host }}:8500 max_fails=1;
 {% endfor %}
     }

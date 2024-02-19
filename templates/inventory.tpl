@@ -41,6 +41,21 @@ ${ lb["name"] }
 ${ consul["name"] }
 %{ endfor ~}
 
+[os-cluster]
+%{ for lb in lbs ~}
+${ lb["name"] } roles=data,master,ingest
+%{ endfor ~}
+
+[master]
+%{ for lb in lbs ~}
+${ lb["name"] }
+%{ endfor ~}
+
+[dashboards]
+%{ for lb in lbs ~}
+${ lb["name"] }
+%{ endfor ~}
+
 [all:vars]
 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o ProxyJump="${ remote_user }@${ lbs[0].network_interface[0].nat_ip_address }"'
 #ansible_ssh_common_args='-o StrictHostKeyChecking=no -o ProxyCommand="ssh -p 22 -W %h:%p -q ${ remote_user }@${ lbs[0].network_interface[0].nat_ip_address }"'

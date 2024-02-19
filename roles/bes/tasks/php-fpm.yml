@@ -1,6 +1,4 @@
 ---
-# tasks file for php
-
 # dnf install epel-release -y
 - name: Install EPEL repo
   ansible.builtin.dnf:
@@ -43,6 +41,8 @@
       - "php-xml"
       - "php-curl"
     state: present
+  notify:
+    - Restart php-fpm
 
 ## sed -i "s/listen = \/run\/php\/php7.4-fpm.sock/listen = 127.0.0.1:9000/" /etc/php/*/fpm/pool.d/www.conf
 ## sed -i "s/listen.allowed_clients = /listen.allowed_clients = {{ ip_address['fw'] }}/" /etc/php-fpm.d/www.conf
@@ -77,7 +77,7 @@
   when: "inventory_hostname == 'be-01'"
 
 # systemctl restart php-fpm.service
-- name: Start php-fpm service
+- name: Restart php-fpm
   ansible.builtin.service:
     name: php-fpm
     state: restarted

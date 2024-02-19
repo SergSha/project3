@@ -1,14 +1,14 @@
 ---
 # systemctl enable nftables --now
-- name: Start nftables service
+- name: Restart nftables
   ansible.builtin.systemd:
     name: nftables
-    state: started
+    state: restarted
     enabled: yes
 
 # systemctl enable nginx --now
 - name: Start nginx service
   ansible.builtin.systemd:
     name: nginx
-    state: started
+    state: restarted
     enabled: yes

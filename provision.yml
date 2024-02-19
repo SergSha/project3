@@ -1,7 +1,8 @@
 ---
-- hosts: all
+- name: Set hostname and modify /etc/hosts
+  hosts: all
   become: true
-  serial: 5
+  serial: 6
   tasks:
     - name: Set hostname
       ansible.builtin.hostname:
@@ -18,7 +19,7 @@
         dest: /etc/hosts
         block: |-
           {% for item in groups['all'] %}
-          {{ hostvars[item]['ip'] }} {{ item }}.{{ domain }} {{ item }}
+          {{ hostvars[item]['ansible_host'] }} {{ item }}.{{ domain }} {{ item }}
           {% endfor %}
         state: present
         create: true
@@ -26,50 +27,87 @@
         marker: "# Ansible inventory hosts {mark}"
       #when: populate_inventory_to_hosts_file
 
-- hosts: all
+- name: Chrony installation & configuration
+  hosts: all
   become: true
-  serial: 5
+  serial: 6
   roles:
     - { role: chrony, tags: chrony_tag }
 
-- hosts: dbs
+- name: NFTables installation & configuration
+  hosts: all
+  become: true
+  serial: 6
+  roles:
+    - { role: nftables, tags: nftables_tag }
+
+- name: Filebeats installation & configuration
+  hosts: all
+  become: true
+  serial: 6
+  roles:
+    - { role: filebeats, tags: filebeats_tag }
+
+- name: Percona XtraDB cluster installation & configuration
+  hosts: dbs
   #remote_user: almalinux
   become: true
-  serial: 5
+  serial: 6
   roles:
     - { role: dbs, tags: dbs_tag }
 
-- hosts: cephs,bes
+- name: Ceph cluster installation
+  hosts: cephs,bes
   #remote_user: almalinux
   become: true
-  serial: 5
+  serial: 6
   roles:
     - { role: ceph_install, tags: ceph_install_tag }
 
-- hosts: cephs
+- name: Ceph cluster configuration
+  hosts: cephs
   #remote_user: almalinux
   become: true
-  serial: 5
+  serial: 6
   roles:
     - { role: ceph_setup, tags: ceph_setup_tag }
 
-- hosts: bes
+- name: Web-servers installation & configuration
+  hosts: bes
   #remote_user: almalinux
   become: true
-  serial: 5
+  serial: 6
   roles:
     - { role: bes, tags: bes_tag }
 #    - { role: wordpress, tags: wordpress_tag }
 
-- hosts: lbs
+- name: Load Balancer installation & configuration
+  hosts: lbs
   #remote_user: almalinux
   become: true
-  serial: 5
+  serial: 6
   roles:
     - { role: lbs, tags: lbs_tag }
 
-- hosts: consuls,lbs,bes
+- name: Consul installation & configuration
+  hosts: consuls,lbs,bes
   become: true
-  serial: 5
+  serial: 6
   roles:
     - { role: consuls, tags: consul_tag }
+
+- name: Opensearch installation & configuration
+  hosts: os-cluster
+  gather_facts: true
+  become: true
+  serial: 6
+  roles:
+    - { role: opensearch, tags: opensearch_tag }
+
+- name: Opensearch dashboards installation & configuration
+  hosts: dashboards
+  gather_facts: true
+  become: true
+  serial: 6
+  roles:
+    - { role: dashboards, tags: dasboards_tag }

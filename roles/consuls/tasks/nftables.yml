@@ -12,10 +12,12 @@
     dest: /etc/sysconfig/nftables.conf
     owner: root
     mode: 0600
+  notify:
+    - Restart nftables
 
-# systemctl restart nftables --now
-- name: Restart nftables
-  ansible.builtin.service:
-    name: nftables
-    state: restarted
-    enabled: yes
+## systemctl restart nftables --now
+#- name: Restart nftables
+#  ansible.builtin.service:
+#    name: nftables
+#    state: restarted
+#    enabled: yes

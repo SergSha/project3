@@ -83,15 +83,78 @@ Ceph кластер будем разворачивать с помощью Terr
 Для того чтобы развернуть ceph кластер, нужно выполнить следующую команду:
 ```bash
 terraform init && terraform apply -auto-approve && \
-sleep 60 && ansible-playbook ./provision.yml
+sleep 60 && ansible-playbook ./provision.yml \
+--extra-vars "admin_password=admin@Otus1234 \
+kibanaserver_password=kibana@Otus1234 \
+logstash_password=logstash@Otus1234"
 ```
 
 По завершению команды получим данные outputs:
 ```
 Outputs:
 
-client-info = {
-  "client-01" = {
+bes-info = {
+  "be-01" = {
+    "ip_address" = tolist([
+      "10.10.10.16",
+    ])
+    "nat_ip_address" = tolist([
+      "",
+    ])
+  }
+  "be-02" = {
+    "ip_address" = tolist([
+      "10.10.10.9",
+    ])
+    "nat_ip_address" = tolist([
+      "",
+    ])
+  }
+}
+cephs-info = {
+  "ceph-01" = {
+    "ip_address" = tolist([
+      "10.10.10.15",
+    ])
+    "nat_ip_address" = tolist([
+      "",
+    ])
+  }
+  "ceph-02" = {
+    "ip_address" = tolist([
+      "10.10.10.14",
+    ])
+    "nat_ip_address" = tolist([
+      "",
+    ])
+  }
+  "ceph-03" = {
+    "ip_address" = tolist([
+      "10.10.10.35",
+    ])
+    "nat_ip_address" = tolist([
+      "",
+    ])
+  }
+}
+consuls-info = {
+  "consul-01" = {
+    "ip_address" = tolist([
+      "10.10.10.29",
+    ])
+    "nat_ip_address" = tolist([
+      "",
+    ])
+  }
+  "consul-02" = {
+    "ip_address" = tolist([
+      "10.10.10.18",
+    ])
+    "nat_ip_address" = tolist([
+      "",
+    ])
+  }
+  "consul-03" = {
     "ip_address" = tolist([
       "10.10.10.32",
     ])
@@ -100,76 +163,135 @@ client-info = {
     ])
   }
 }
-mds-info = {
-  "mds-01" = {
+dbs-info = {
+  "db-01" = {
     "ip_address" = tolist([
-      "10.10.10.18",
+      "10.10.10.36",
+    ])
+    "nat_ip_address" = tolist([
+      "",
+    ])
+  }
+  "db-02" = {
+    "ip_address" = tolist([
+      "10.10.10.3",
     ])
     "nat_ip_address" = tolist([
       "",
     ])
   }
 }
-mon-info = {
-  "mon-01" = {
+lbs-info = {
+  "lb-01" = {
     "ip_address" = tolist([
-      "10.10.10.11",
+      "10.10.10.8",
     ])
     "nat_ip_address" = tolist([
-      "84.201.167.133",
+      "158.160.83.34",
     ])
   }
-  "mon-02" = {
+  "lb-02" = {
     "ip_address" = tolist([
-      "10.10.10.31",
-    ])
-    "nat_ip_address" = tolist([
-      "",
-    ])
-  }
-  "mon-03" = {
-    "ip_address" = tolist([
-      "10.10.10.20",
+      "10.10.10.34",
     ])
     "nat_ip_address" = tolist([
       "",
     ])
   }
 }
-osd-info = {
-  "osd-01" = {
-    "ip_address" = tolist([
-      "10.10.10.28",
+loadbalancer-info = [
+  {
+    "attached_target_group" = toset([
+      {
+        "healthcheck" = tolist([
+          {
+            "healthy_threshold" = 2
+            "http_options" = tolist([])
+            "interval" = 2
+            "name" = "tcp"
+            "tcp_options" = tolist([
+              {
+                "port" = 80
+              },
+            ])
+            "timeout" = 1
+            "unhealthy_threshold" = 2
+          },
+        ])
+        "target_group_id" = "enpnbjm6sq7cj4jbbds6"
+      },
+      {
+        "healthcheck" = tolist([
+          {
+            "healthy_threshold" = 2
+            "http_options" = tolist([])
+            "interval" = 2
+            "name" = "tcp"
+            "tcp_options" = tolist([
+              {
+                "port" = 8443
+              },
+            ])
+            "timeout" = 1
+            "unhealthy_threshold" = 2
+          },
+        ])
+        "target_group_id" = "enpug6u3istvke97b2p2"
+      },
     ])
-    "nat_ip_address" = tolist([
-      "",
+    "created_at" = "2024-02-19T12:03:00Z"
+    "deletion_protection" = false
+    "description" = ""
+    "folder_id" = "b1g5h8d28qvg63eps3ms"
+    "id" = "enptl3sk18857c6u0crv"
+    "labels" = tomap({})
+    "listener" = toset([
+      {
+        "external_address_spec" = toset([
+          {
+            "address" = "158.160.149.25"
+            "ip_version" = "ipv4"
+          },
+        ])
+        "internal_address_spec" = toset([])
+        "name" = "ceph-dashboard-listener"
+        "port" = 8443
+        "protocol" = "tcp"
+        "target_port" = 8443
+      },
+      {
+        "external_address_spec" = toset([
+          {
+            "address" = "158.160.149.25"
+            "ip_version" = "ipv4"
+          },
+        ])
+        "internal_address_spec" = toset([])
+        "name" = "opensearch-dashboard-listener"
+        "port" = 5601
+        "protocol" = "tcp"
+        "target_port" = 5601
+      },
+      {
+        "external_address_spec" = toset([
+          {
+            "address" = "158.160.149.25"
+            "ip_version" = "ipv4"
+          },
+        ])
+        "internal_address_spec" = toset([])
+        "name" = "web-listener"
+        "port" = 80
+        "protocol" = "tcp"
+        "target_port" = 80
+      },
     ])
-  }
-  "osd-02" = {
-    "ip_address" = tolist([
-      "10.10.10.23",
-    ])
-    "nat_ip_address" = tolist([
-      "",
-    ])
-  }
-  "osd-03" = {
-    "ip_address" = tolist([
-      "10.10.10.12",
-    ])
-    "nat_ip_address" = tolist([
-      "",
-    ])
-  }
-  "osd-04" = {
-    "ip_address" = tolist([
-      "10.10.10.21",
-    ])
-    "nat_ip_address" = tolist([
-      "",
-    ])
-  }
-}
+    "name" = "mylb"
+    "network_load_balancer_id" = "enptl3sk18857c6u0crv"
+    "region_id" = "ru-central1"
+    "type" = "external"
+  },
+]
 ```
 
 На всех серверах будут установлены ОС Almalinux 9, настроены синхронизация времени Chrony, система принудительного контроля доступа SELinux по рекомендации из документации Ceph для быстрой установки и настройки ceph кластера переведён в Permissive, в качестве firewall будет использоваться NFTables.

@@ -219,6 +219,8 @@ module "lbs" {
   source         = "./modules/instances"
   count          = local.lb_count
   vm_name        = "lb-${format("%02d", count.index + 1)}"
+  cpu            = 2
+  memory         = 8
   vpc_name       = local.vpc_name
   #folder_id      = yandex_resourcemanager_folder.folders["lab-folder"].id
   network_interface = {
@@ -341,8 +343,8 @@ resource "yandex_lb_target_group" "web-tg" {
   }
 }
 
-resource "yandex_lb_target_group" "ceph-tg" {
-  name      = "ceph-group"
+resource "yandex_lb_target_group" "ceph-dashboard-tg" {
+  name      = "ceph-dashboard-group"
   region_id = "ru-central1"
   #folder_id = yandex_resourcemanager_folder.folders["lab-folder"].id
 
@@ -368,8 +370,16 @@ resource "yandex_lb_network_load_balancer" "mylb" {
   }
   
   listener {
-    name = "ceph-listener"
+    name = "ceph-dashboard-listener"
     port = 8443
+    external_address_spec {
+      ip_version = "ipv4"
+    }
+  }
+  
+  listener {
+    name = "opensearch-dashboard-listener"
+    port = 5601
     external_address_spec {
       ip_version = "ipv4"
     }
@@ -378,19 +388,21 @@ resource "yandex_lb_network_load_balancer" "mylb" {
   attached_target_group {
     target_group_id = yandex_lb_target_group.web-tg.id
     healthcheck {
-      name = "tcp"
-      tcp_options {
+      name = "http"
+      http_options {
         port = 80
+        path = "/"
       }
     }
   }
   
   attached_target_group {
-    target_group_id = yandex_lb_target_group.ceph-tg.id
+    target_group_id = yandex_lb_target_group.ceph-dashboard-tg.id
     healthcheck {
-      name = "tcp"
-      tcp_options {
+      name = "ceph"
+      http_options {
         port = 8443
+        path = "/"
       }
     }
   }

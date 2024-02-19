@@ -1,7 +1,7 @@
 ---
-- name: Include nftables service
-  include_tasks: nftables.yml
-  when: inventory_hostname in groups['cephs']
+#- name: Include nftables service
+#  include_tasks: nftables.yml
+#  when: inventory_hostname in groups['cephs']
 
 - name: Include selinux setting
   include_tasks: selinux.yml

@@ -11,6 +11,15 @@ table ip filter {
                 tcp dport { 8300,8301,8302,8500,8600 } ct state new counter accept
                 udp dport { 8301,8302,8600 } ct state new counter accept
         }
+        chain LOGSTASH_INP {
+                tcp dport { 5044, 9600 } ct state new counter accept
+        }
+        chain OPENSEARCH_INP {
+                tcp dport { 9200, 9300 } ct state new counter accept
+        }
+        chain DASHBOARDS_INP {
+                tcp dport 5601 ct state new counter accept
+        }
         chain INPUT {
                 type filter hook input priority filter; policy drop;
                 ct state invalid counter drop
@@ -21,6 +30,9 @@ table ip filter {
                 ct state established,related counter accept
                 counter jump NGINX_INP
                 counter jump CONSUL_INP
+                counter jump OPENSEARCH_INP
+                counter jump LOGSTASH_INP
+                counter jump DASHBOARDS_INP
         }
 
         chain FORWARD {

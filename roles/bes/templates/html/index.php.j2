@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>LIST CARS</title>
+<title>Sale of new and used cars</title>
 <meta charset="utf-8" />
 </head>
 <body>
 
-<h2>LIST CARS</h2>
+<h2>THE CAR MARKET</h2>
+<h4>Sale of new and used cars</h4>
 
 <?php
 // List of new and used cars
@@ -15,7 +16,7 @@ try {
     $tbs = "SHOW TABLES";
     $tbarray = $conn->query($tbs);
     while($tb = $tbarray->fetch()){
-    echo "<h3>List " . $tb["0"] . " cars</h3>";
+    echo "<h3>List of " . $tb["0"] . " cars</h3>";
     echo "<table><tr><th>N</th><th>Name</th><th>Year</th><th>Price</th></tr>";
     $sql = "SELECT * FROM $tb[0]";
     $result = $conn->query($sql);

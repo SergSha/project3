@@ -1,7 +1,4 @@
 ---
-#- name: Include nftables service
-#  include_tasks: nftables.yml
-
 #- name: Set hostname
 #  ansible.builtin.hostname:
 #    name: "{{ inventory_hostname }}"

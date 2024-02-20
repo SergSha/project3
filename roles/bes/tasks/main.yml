@@ -1,7 +1,4 @@
 ---
-#- name: Include nftables service
-#  include_tasks: nftables.yml
-
 - name: Include selinux setting
   include_tasks: selinux.yml
   when: ansible_os_family == "RedHat"

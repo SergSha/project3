@@ -6,11 +6,7 @@
 
 # Restart service and ensure it is enabled
 - name: restart opensearch
-  ansible.builtin.systemd: name=opensearch state=restarted enabled=yes
-
-# systemctl restart nftables --now
-- name: Restart nftables
-  ansible.builtin.service:
-    name: nftables
-    state: restarted
+  ansible.builtin.systemd: 
+    name: opensearch 
+    state: restarted 
     enabled: yes

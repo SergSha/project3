@@ -5,12 +5,6 @@
     name: nginx
     state: reloaded
 
-# systemctl restart php-fpm # debian
-- name: restart php-fpm debian
-  ansible.builtin.systemd:
-    name: "php{{ php_version }}-fpm"
-    state: restarted
-
 # systemctl restart php-fpm # redhat
 - name: restart php-fpm redhat
   ansible.builtin.systemd:

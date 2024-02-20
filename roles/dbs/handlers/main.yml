@@ -5,10 +5,3 @@
     name: mysqld
     state: restarted
     enabled: yes
-
-# systemctl restart nftables --now
-- name: Restart nftables
-  ansible.builtin.service:
-    name: nftables
-    state: restarted
-    enabled: yes

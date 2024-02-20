@@ -1,11 +1,7 @@
 ---
-# systemctl restart dashboards --now
+# systemctl restart dashboards
 - name: restart dashboards
-  ansible.builtin.systemd: name=dashboards state=restarted enabled=true
-
-# systemctl restart nftables --now
-- name: Restart nftables
-  ansible.builtin.service:
-    name: nftables
-    state: restarted
-    enabled: yes
+  ansible.builtin.systemd:
+    name: dashboards 
+    state: restarted 
+    enabled: true

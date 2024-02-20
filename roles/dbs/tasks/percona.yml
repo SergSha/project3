@@ -1,14 +1,4 @@
-#- name: Create share mysql data folder
-#  file:
-#    path: /data
-#    state: directory
-#    mode: 0777
-
-#- name: Copy config files
-#  ansible.builtin.template:
-#    src: percona/cars.sql
-#    dest: /data/cars.sql
-
+---
 # rpm --import https://www.percona.com/downloads/RPM-GPG-KEY-percona
 - name: install percona key
   ansible.builtin.rpm_key:

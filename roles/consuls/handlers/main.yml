@@ -12,10 +12,3 @@
     name: consul-template
     state: reloaded
     enabled: true
-
-# systemctl restart nftables --now
-- name: Restart nftables
-  ansible.builtin.service:
-    name: nftables
-    state: restarted
-    enabled: yes

@@ -1,3 +1,0 @@
----
-- name: Include filebeat service
-  include_tasks: filebeat.yml

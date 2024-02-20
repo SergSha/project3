@@ -34,20 +34,6 @@
   roles:
     - { role: chrony, tags: chrony_tag }
 
-- name: NFTables installation & configuration
-  hosts: all
-  become: true
-  serial: 6
-  roles:
-    - { role: nftables, tags: nftables_tag }
-
-- name: Filebeats installation & configuration
-  hosts: all
-  become: true
-  serial: 6
-  roles:
-    - { role: filebeats, tags: filebeats_tag }
-
 - name: Percona XtraDB cluster installation & configuration
   hosts: dbs
   #remote_user: almalinux
@@ -97,7 +83,7 @@
     - { role: consuls, tags: consul_tag }
 
 - name: Opensearch installation & configuration
-  hosts: os-cluster
+  hosts: all
   gather_facts: true
   become: true
   serial: 6
@@ -110,4 +96,11 @@
   become: true
   serial: 6
   roles:
-    - { role: dashboards, tags: dasboards_tag }
+    - { role: dashboards, tags: dashboards_tag }
+
+- name: NFTables installation & configuration
+  hosts: all
+  become: true
+  serial: 6
+  roles:
+    - { role: nftables, tags: nftables_tag }

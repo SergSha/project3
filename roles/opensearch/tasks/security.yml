@@ -47,7 +47,7 @@
 - name: Security Plugin configuration | Prepare the certificates generation template file
   local_action:
     module: template
-    src: tlsconfig.yml
+    src: opensearch/tlsconfig.yml
     dest: /tmp/opensearch-nodecerts/config/tlsconfig.yml
   run_once: true
   when: configuration.changed
@@ -130,7 +130,7 @@
 
 - name: Security Plugin configuration | Copy the security configuration file 1 to cluster
   ansible.builtin.blockinfile:
-    block: "{{ lookup('template', 'templates/security_conf.yml') }}"
+    block: "{{ lookup('template', 'templates/opensearch/security_conf.yml') }}"
     dest: "{{ os_conf_dir }}/opensearch.yml"
     backup: true
     insertafter: EOF
@@ -157,7 +157,7 @@
 
 - name: Security Plugin configuration | Copy the security configuration file 3 to cluster
   ansible.builtin.template:
-    src: security_plugin_conf.yml
+    src: opensearch/security_plugin_conf.yml
     dest: "{{ os_sec_plugin_conf_path }}/config.yml"
     backup: true
     owner: "{{ os_user }}"
@@ -200,7 +200,7 @@
 
 - name: Security Plugin configuration | Copy the opensearch security internal users template
   ansible.builtin.template:
-    src: internal_users.yml
+    src: opensearch/internal_users.yml
     dest: "{{ os_sec_plugin_conf_path }}/internal_users.yml"
     mode: 0644
   run_once: true
@@ -208,7 +208,7 @@
 
 - name: Security Plugin configuration | Copy custom configuration files to cluster
   ansible.builtin.template:
-    src: "{{ item }}"
+    src: "opensearch/{{ item }}"
     dest: "{{ os_sec_plugin_conf_path }}/"
     owner: "{{ os_user }}"
     group: "{{ os_user }}"

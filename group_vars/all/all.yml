@@ -67,10 +67,10 @@ copy_custom_security_configs: false
 # To override demo configurations, you can use your own configuration files.
 # Place them in the "files" directory. Specify the path to the files
 custom_security_plugin_configs:
-  - roles/opensearch/files/tenants.yml
-  - roles/opensearch/files/roles.yml
-  - roles/opensearch/files/roles_mapping.yml
-  - roles/opensearch/files/internal_users.yml
+  - roles/opensearch/files/opensearch/tenants.yml
+  - roles/opensearch/files/opensearch/roles.yml
+  - roles/opensearch/files/opensearch/roles_mapping.yml
+  - roles/opensearch/files/opensearch/internal_users.yml
 
 # By default, if the /tmp/opensearch-nodecerts directory with certificates
 # exists on the server from which the playbook is launched, it is assumed

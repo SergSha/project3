@@ -96,7 +96,7 @@ Outputs:
 bes-info = {
   "be-01" = {
     "ip_address" = tolist([
-      "10.10.10.16",
+      "10.10.10.7",
     ])
     "nat_ip_address" = tolist([
       "",
@@ -104,7 +104,7 @@ bes-info = {
   }
   "be-02" = {
     "ip_address" = tolist([
-      "10.10.10.9",
+      "10.10.10.5",
     ])
     "nat_ip_address" = tolist([
       "",
@@ -114,7 +114,7 @@ bes-info = {
 cephs-info = {
   "ceph-01" = {
     "ip_address" = tolist([
-      "10.10.10.15",
+      "10.10.10.8",
     ])
     "nat_ip_address" = tolist([
       "",
@@ -122,7 +122,7 @@ cephs-info = {
   }
   "ceph-02" = {
     "ip_address" = tolist([
-      "10.10.10.14",
+      "10.10.10.30",
     ])
     "nat_ip_address" = tolist([
       "",
@@ -130,7 +130,7 @@ cephs-info = {
   }
   "ceph-03" = {
     "ip_address" = tolist([
-      "10.10.10.35",
+      "10.10.10.3",
     ])
     "nat_ip_address" = tolist([
       "",
@@ -140,7 +140,7 @@ cephs-info = {
 consuls-info = {
   "consul-01" = {
     "ip_address" = tolist([
-      "10.10.10.29",
+      "10.10.10.23",
     ])
     "nat_ip_address" = tolist([
       "",
@@ -148,7 +148,7 @@ consuls-info = {
   }
   "consul-02" = {
     "ip_address" = tolist([
-      "10.10.10.18",
+      "10.10.10.38",
     ])
     "nat_ip_address" = tolist([
       "",
@@ -156,7 +156,7 @@ consuls-info = {
   }
   "consul-03" = {
     "ip_address" = tolist([
-      "10.10.10.32",
+      "10.10.10.24",
     ])
     "nat_ip_address" = tolist([
       "",
@@ -166,7 +166,7 @@ consuls-info = {
 dbs-info = {
   "db-01" = {
     "ip_address" = tolist([
-      "10.10.10.36",
+      "10.10.10.26",
     ])
     "nat_ip_address" = tolist([
       "",
@@ -174,7 +174,7 @@ dbs-info = {
   }
   "db-02" = {
     "ip_address" = tolist([
-      "10.10.10.3",
+      "10.10.10.32",
     ])
     "nat_ip_address" = tolist([
       "",
@@ -184,15 +184,15 @@ dbs-info = {
 lbs-info = {
   "lb-01" = {
     "ip_address" = tolist([
-      "10.10.10.8",
+      "10.10.10.39",
     ])
     "nat_ip_address" = tolist([
-      "158.160.83.34",
+      "158.160.10.39",
     ])
   }
   "lb-02" = {
     "ip_address" = tolist([
-      "10.10.10.34",
+      "10.10.10.36",
     ])
     "nat_ip_address" = tolist([
       "",
@@ -206,50 +206,52 @@ loadbalancer-info = [
         "healthcheck" = tolist([
           {
             "healthy_threshold" = 2
-            "http_options" = tolist([])
-            "interval" = 2
-            "name" = "tcp"
-            "tcp_options" = tolist([
+            "http_options" = tolist([
               {
+                "path" = "/"
                 "port" = 80
               },
             ])
+            "interval" = 2
+            "name" = "http"
+            "tcp_options" = tolist([])
             "timeout" = 1
             "unhealthy_threshold" = 2
           },
         ])
-        "target_group_id" = "enpnbjm6sq7cj4jbbds6"
+        "target_group_id" = "enp62gnklm6f60n10t4f"
       },
       {
         "healthcheck" = tolist([
           {
             "healthy_threshold" = 2
-            "http_options" = tolist([])
-            "interval" = 2
-            "name" = "tcp"
-            "tcp_options" = tolist([
+            "http_options" = tolist([
               {
+                "path" = "/"
                 "port" = 8443
               },
             ])
+            "interval" = 2
+            "name" = "ceph"
+            "tcp_options" = tolist([])
             "timeout" = 1
             "unhealthy_threshold" = 2
           },
         ])
-        "target_group_id" = "enpug6u3istvke97b2p2"
+        "target_group_id" = "enpq15flipfmo754tu8h"
       },
     ])
-    "created_at" = "2024-02-19T12:03:00Z"
+    "created_at" = "2024-02-20T18:54:52Z"
     "deletion_protection" = false
     "description" = ""
     "folder_id" = "b1g5h8d28qvg63eps3ms"
-    "id" = "enptl3sk18857c6u0crv"
+    "id" = "enp74g7l9dn5u947lv0p"
     "labels" = tomap({})
     "listener" = toset([
       {
         "external_address_spec" = toset([
           {
-            "address" = "158.160.149.25"
+            "address" = "158.160.138.160"
             "ip_version" = "ipv4"
           },
         ])
@@ -262,7 +264,7 @@ loadbalancer-info = [
       {
         "external_address_spec" = toset([
           {
-            "address" = "158.160.149.25"
+            "address" = "158.160.138.160"
             "ip_version" = "ipv4"
           },
         ])
@@ -275,7 +277,7 @@ loadbalancer-info = [
       {
         "external_address_spec" = toset([
           {
-            "address" = "158.160.149.25"
+            "address" = "158.160.138.160"
             "ip_version" = "ipv4"
           },
         ])
@@ -287,7 +289,7 @@ loadbalancer-info = [
       },
     ])
     "name" = "mylb"
-    "network_load_balancer_id" = "enptl3sk18857c6u0crv"
+    "network_load_balancer_id" = "enp74g7l9dn5u947lv0p"
     "region_id" = "ru-central1"
     "type" = "external"
   },

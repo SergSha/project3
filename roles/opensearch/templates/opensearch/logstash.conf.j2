@@ -7,7 +7,7 @@ input {
 output {
   opensearch {
     hosts => [
-{%- for item in groups['os-cluster'] %}
+{%- for item in groups['os_cluster'] %}
 "https://{{ hostvars[item].ansible_host }}:9200"{% if not loop.last %},{% endif %}
 {%- endfor %}
 ]

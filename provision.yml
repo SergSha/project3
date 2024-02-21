@@ -82,8 +82,16 @@
   roles:
     - { role: consuls, tags: consul_tag }
 
-- name: Opensearch installation & configuration
+- name: Filebeat installation & configuration
   hosts: all
+  gather_facts: true
+  become: true
+  serial: 6
+  roles:
+    - { role: filebeat, tags: filebeat_tag }
+
+- name: Opensearch installation & configuration
+  hosts: os_cluster
   gather_facts: true
   become: true
   serial: 6

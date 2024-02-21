@@ -41,7 +41,7 @@ ${ lb["name"] }
 ${ consul["name"] }
 %{ endfor ~}
 
-[os-cluster]
+[os_cluster]
 %{ for lb in lbs ~}
 ${ lb["name"] } roles=data,master,ingest
 %{ endfor ~}

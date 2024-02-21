@@ -13,6 +13,6 @@ filebeat.inputs:
 
 output.logstash:
   hosts:
-{% for item in groups['os-cluster'] %}
+{% for item in groups['os_cluster'] %}
     - {{ hostvars[item]['ansible_host'] }}:5044
 {% endfor %}

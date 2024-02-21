@@ -68,6 +68,22 @@ data "yandex_vpc_network" "vpc" {
   name      = yandex_vpc_network.vpc.name
 }
 
+resource "yandex_vpc_address" "vmaddr" {
+  name = "vmaddr"
+  deletion_protection = false
+  external_ipv4_address {
+    zone_id = var.zone
+  }
+}
+
+resource "yandex_vpc_address" "lbaddr" {
+  name = "lbaddr"
+  deletion_protection = false
+  external_ipv4_address {
+    zone_id = var.zone
+  }
+}
+
 #resource "yandex_vpc_subnet" "subnet" {
 #  count          = length(local.subnet_cidrs)
 #  #folder_id      = yandex_resourcemanager_folder.folders["lab-folder"].id
@@ -226,8 +242,9 @@ module "lbs" {
   network_interface = {
     for subnet in yandex_vpc_subnet.subnets :
     subnet.name => {
-      subnet_id = subnet.id
-      nat       =  count.index==0 ? true : false
+      subnet_id      = subnet.id
+      nat            = count.index==0 ? true : false
+      nat_ip_address = count.index==0 ? yandex_vpc_address.vmaddr.external_ipv4_address[0].address : ""
     }
     if subnet.name == "lab-subnet" #|| subnet.name == "nginx-subnet"
   }
@@ -338,7 +355,8 @@ resource "yandex_lb_target_group" "web-tg" {
     for_each = data.yandex_compute_instance.lbs[*].network_interface.0.ip_address
     content {
       subnet_id = yandex_vpc_subnet.subnets["lab-subnet"].id
-      address   = target.value
+      #address   = target.value
+      address   = yandex_vpc_address.lbaddr.external_ipv4_address[0].address
     }
   }
 }

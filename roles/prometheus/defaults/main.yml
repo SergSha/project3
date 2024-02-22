@@ -1,8 +1,8 @@
 ---
 # Prometheus
-prometheus_ip: "{{ ansible_host }}"
 prometheus_version: 2.50.0
 go_arch: amd64
+target_ip: "{% for host in groups.all %}'{{ hostvars[host].ansible_host }}:9100',{% endfor %}"
 
 prometheus_config_dir: /etc/prometheus
 prometheus_db_dir: /var/lib/prometheus

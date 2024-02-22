@@ -316,6 +316,11 @@ Consul-кластер был развёрнут на трёх нодах consul-
 <img src="pics/screen-007.png" alt="screen-007.png" />
 
 
+Prometheus + Grafana:
+
+<img src="pics/screen-008.png" alt="screen-008.png" />
+
+
 #### Удаление развёрнутой инфраструктуры
 
 Удалить развернутую инфраструктуру с помощью следующей команды:

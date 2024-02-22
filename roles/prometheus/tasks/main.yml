@@ -20,9 +20,9 @@
   include_tasks: prometheus.yml
   when: inventory_hostname in groups['lbs']
 
-- name: Include install grafana
-  include_tasks: grafana.yml
-  when: inventory_hostname in groups['lbs']
+#- name: Include install grafana
+#  include_tasks: grafana.yml
+#  when: inventory_hostname in groups['lbs']
 
 #- name: Include install node_exporter
 #  include_tasks: node_exporter.yml

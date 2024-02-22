@@ -102,13 +102,21 @@
 #  roles:
 #    - { role: dashboards, tags: dashboards_tag }
 
-- name: Prometheus & Grafana installation & configuration
+- name: Prometheus installation & configuration
   hosts: prometheus
   gather_facts: true
   become: true
   serial: 6
   roles:
     - { role: prometheus, tags: prometheus_tag }
+
+- name: Grafana installation & configuration
+  hosts: grafana
+  gather_facts: true
+  become: true
+  serial: 6
+  roles:
+    - { role: grafana, tags: grafana_tag }
 
 - name: NFTables installation & configuration
   hosts: all

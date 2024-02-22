@@ -123,7 +123,7 @@
   ansible.builtin.lineinfile:
     path: /etc/prometheus/prometheus.yml
     insertafter: EOF
-    line: "  - job_name: 'node_exporter_clients'\n    scrape_interval: 5s\n    static_configs:\n      - targets: ['{{ prometheus_ip }}:9100']"
+    line: "  - job_name: 'node_exporter_clients'\n    scrape_interval: 5s\n    static_configs:\n      - targets: [{{ target_ip }}]"
     state: present
 
 - name: Prometheus | ensure prometheus service is started and enabled

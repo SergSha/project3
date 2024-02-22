@@ -1,0 +1,4 @@
+---
+- name: Include install node_exporter
+  include_tasks: node_exporter.yml
+

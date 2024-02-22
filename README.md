@@ -199,101 +199,26 @@ lbs-info = {
     ])
   }
 }
-loadbalancer-info = [
-  {
-    "attached_target_group" = toset([
+loadbalancer-info = {
+  "opensearch-dashboard-listener" = {
+    "ip_address" = toset([
       {
-        "healthcheck" = tolist([
-          {
-            "healthy_threshold" = 2
-            "http_options" = tolist([
-              {
-                "path" = "/"
-                "port" = 80
-              },
-            ])
-            "interval" = 2
-            "name" = "http"
-            "tcp_options" = tolist([])
-            "timeout" = 1
-            "unhealthy_threshold" = 2
-          },
-        ])
-        "target_group_id" = "enp62gnklm6f60n10t4f"
-      },
-      {
-        "healthcheck" = tolist([
-          {
-            "healthy_threshold" = 2
-            "http_options" = tolist([
-              {
-                "path" = "/"
-                "port" = 8443
-              },
-            ])
-            "interval" = 2
-            "name" = "ceph"
-            "tcp_options" = tolist([])
-            "timeout" = 1
-            "unhealthy_threshold" = 2
-          },
-        ])
-        "target_group_id" = "enpq15flipfmo754tu8h"
+        "address" = "158.160.138.160"
+        "ip_version" = "ipv4"
       },
     ])
-    "created_at" = "2024-02-20T18:54:52Z"
-    "deletion_protection" = false
-    "description" = ""
-    "folder_id" = "b1g5h8d28qvg63eps3ms"
-    "id" = "enp74g7l9dn5u947lv0p"
-    "labels" = tomap({})
-    "listener" = toset([
+    "port" = 5601
+  }
+  "web-listener" = {
+    "ip_address" = toset([
       {
-        "external_address_spec" = toset([
-          {
-            "address" = "158.160.138.160"
-            "ip_version" = "ipv4"
-          },
-        ])
-        "internal_address_spec" = toset([])
-        "name" = "ceph-dashboard-listener"
-        "port" = 8443
-        "protocol" = "tcp"
-        "target_port" = 8443
-      },
-      {
-        "external_address_spec" = toset([
-          {
-            "address" = "158.160.138.160"
-            "ip_version" = "ipv4"
-          },
-        ])
-        "internal_address_spec" = toset([])
-        "name" = "opensearch-dashboard-listener"
-        "port" = 5601
-        "protocol" = "tcp"
-        "target_port" = 5601
-      },
-      {
-        "external_address_spec" = toset([
-          {
-            "address" = "158.160.138.160"
-            "ip_version" = "ipv4"
-          },
-        ])
-        "internal_address_spec" = toset([])
-        "name" = "web-listener"
-        "port" = 80
-        "protocol" = "tcp"
-        "target_port" = 80
+        "address" = "158.160.138.160"
+        "ip_version" = "ipv4"
       },
     ])
-    "name" = "mylb"
-    "network_load_balancer_id" = "enp74g7l9dn5u947lv0p"
-    "region_id" = "ru-central1"
-    "type" = "external"
-  },
-]
+    "port" = 80
+  }
+}
 ```
 
 На всех серверах будут установлены ОС Almalinux 9, настроены синхронизация времени Chrony, система принудительного контроля доступа SELinux, в качестве firewall будет использоваться NFTables.

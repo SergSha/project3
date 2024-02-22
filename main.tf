@@ -355,28 +355,13 @@ resource "yandex_lb_target_group" "web-tg" {
     for_each = data.yandex_compute_instance.lbs[*].network_interface.0.ip_address
     content {
       subnet_id = yandex_vpc_subnet.subnets["lab-subnet"].id
-      #address   = target.value
-      address   = yandex_vpc_address.lbaddr.external_ipv4_address[0].address
-    }
-  }
-}
-
-resource "yandex_lb_target_group" "ceph-dashboard-tg" {
-  name      = "ceph-dashboard-group"
-  region_id = "ru-central1"
-  #folder_id = yandex_resourcemanager_folder.folders["lab-folder"].id
-
-  dynamic "target" {
-    for_each = data.yandex_compute_instance.cephs[*].network_interface.0.ip_address
-    content {
-      subnet_id = yandex_vpc_subnet.subnets["lab-subnet"].id
       address   = target.value
     }
   }
 }
 
-resource "yandex_lb_network_load_balancer" "mylb" {
-  name = "mylb"
+resource "yandex_lb_network_load_balancer" "web-lb" {
+  name = "web-lb"
   #folder_id = yandex_resourcemanager_folder.folders["lab-folder"].id
 
   listener {
@@ -384,14 +369,7 @@ resource "yandex_lb_network_load_balancer" "mylb" {
     port = 80
     external_address_spec {
       ip_version = "ipv4"
-    }
-  }
-  
-  listener {
-    name = "ceph-dashboard-listener"
-    port = 8443
-    external_address_spec {
-      ip_version = "ipv4"
+      address    = yandex_vpc_address.lbaddr.external_ipv4_address[0].address
     }
   }
   
@@ -400,6 +378,7 @@ resource "yandex_lb_network_load_balancer" "mylb" {
     port = 5601
     external_address_spec {
       ip_version = "ipv4"
+      address    = yandex_vpc_address.lbaddr.external_ipv4_address[0].address
     }
   }
   
@@ -413,21 +392,10 @@ resource "yandex_lb_network_load_balancer" "mylb" {
       }
     }
   }
-  
-  attached_target_group {
-    target_group_id = yandex_lb_target_group.ceph-dashboard-tg.id
-    healthcheck {
-      name = "ceph"
-      http_options {
-        port = 8443
-        path = "/"
-      }
-    }
-  }
 }
 
-data "yandex_lb_network_load_balancer" "mylb" {
-  name = "mylb"
+data "yandex_lb_network_load_balancer" "web-lb" {
+  name = "web-lb"
   #folder_id = yandex_resourcemanager_folder.folders["lab-folder"].id
-  depends_on = [yandex_lb_network_load_balancer.mylb]
+  depends_on = [yandex_lb_network_load_balancer.web-lb]
 }

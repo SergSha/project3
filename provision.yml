@@ -34,53 +34,48 @@
   roles:
     - { role: chrony, tags: chrony_tag }
 
-- name: Percona XtraDB cluster installation & configuration
-  hosts: dbs
-  #remote_user: almalinux
-  become: true
-  serial: 6
-  roles:
-    - { role: dbs, tags: dbs_tag }
+#- name: Percona XtraDB cluster installation & configuration
+#  hosts: dbs
+#  become: true
+#  serial: 6
+#  roles:
+#    - { role: dbs, tags: dbs_tag }
 
-- name: Ceph cluster installation
-  hosts: cephs,bes
-  #remote_user: almalinux
-  become: true
-  serial: 6
-  roles:
-    - { role: ceph_install, tags: ceph_install_tag }
+#- name: Ceph cluster installation
+#  hosts: cephs,bes
+#  become: true
+#  serial: 6
+#  roles:
+#    - { role: ceph_install, tags: ceph_install_tag }
 
-- name: Ceph cluster configuration
-  hosts: cephs
-  #remote_user: almalinux
-  become: true
-  serial: 6
-  roles:
-    - { role: ceph_setup, tags: ceph_setup_tag }
+#- name: Ceph cluster configuration
+#  hosts: cephs
+#  become: true
+#  serial: 6
+#  roles:
+#    - { role: ceph_setup, tags: ceph_setup_tag }
 
-- name: Web-servers installation & configuration
-  hosts: bes
-  #remote_user: almalinux
-  become: true
-  serial: 6
-  roles:
-    - { role: bes, tags: bes_tag }
-#    - { role: wordpress, tags: wordpress_tag }
+#- name: Web-servers installation & configuration
+#  hosts: bes
+#  become: true
+#  serial: 6
+#  roles:
+#    - { role: bes, tags: bes_tag }
+##    - { role: wordpress, tags: wordpress_tag }
 
 - name: Load Balancer installation & configuration
   hosts: lbs
-  #remote_user: almalinux
   become: true
   serial: 6
   roles:
     - { role: lbs, tags: lbs_tag }
 
-- name: Consul installation & configuration
-  hosts: consuls,lbs,bes
-  become: true
-  serial: 6
-  roles:
-    - { role: consuls, tags: consul_tag }
+#- name: Consul installation & configuration
+#  hosts: consuls,lbs,bes
+#  become: true
+#  serial: 6
+#  roles:
+#    - { role: consuls, tags: consul_tag }
 
 - name: Filebeat & Node_exporter installation & configuration
   hosts: all
@@ -91,21 +86,21 @@
     - { role: filebeat, tags: filebeat_tag }
     - { role: node_exporter, tags: node_exporter_tag }
 
-- name: Opensearch installation & configuration
-  hosts: os_cluster
-  gather_facts: true
-  become: true
-  serial: 6
-  roles:
-    - { role: opensearch, tags: opensearch_tag }
+#- name: Opensearch installation & configuration
+#  hosts: os_cluster
+#  gather_facts: true
+#  become: true
+#  serial: 6
+#  roles:
+#    - { role: opensearch, tags: opensearch_tag }
 
-- name: Opensearch dashboards installation & configuration
-  hosts: dashboards
-  gather_facts: true
-  become: true
-  serial: 6
-  roles:
-    - { role: dashboards, tags: dashboards_tag }
+#- name: Opensearch dashboards installation & configuration
+#  hosts: dashboards
+#  gather_facts: true
+#  become: true
+#  serial: 6
+#  roles:
+#    - { role: dashboards, tags: dashboards_tag }
 
 - name: Prometheus & Grafana installation & configuration
   hosts: prometheus

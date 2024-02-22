@@ -1,19 +1,19 @@
 
 [all]
 %{ for db in dbs ~}
-${ db["name"] } ansible_host=${ db.network_interface[0].ip_address } ip=${ db.network_interface[0].ip_address }
+${ db["name"] } ansible_host=${ db.network_interface[0].ip_address }
 %{ endfor ~}
 %{ for ceph in cephs ~}
-${ ceph["name"] } ansible_host=${ ceph.network_interface[0].ip_address } ip=${ ceph.network_interface[0].ip_address }
+${ ceph["name"] } ansible_host=${ ceph.network_interface[0].ip_address }
 %{ endfor ~}
 %{ for be in bes ~}
-${ be["name"] } ansible_host=${ be.network_interface[0].ip_address } ip=${ be.network_interface[0].ip_address }
+${ be["name"] } ansible_host=${ be.network_interface[0].ip_address }
 %{ endfor ~}
 %{ for lb in lbs ~}
-${ lb["name"] } ansible_host=${ lb.network_interface[0].ip_address } ip=${ lb.network_interface[0].ip_address } public_ip=${ lb.network_interface[0].nat_ip_address }
+${ lb["name"] } ansible_host=${ lb.network_interface[0].ip_address } public_ip=${ lb.network_interface[0].nat_ip_address }
 %{ endfor ~}
 %{ for index, consul in consuls ~}
-${ consul["name"] } ansible_host=${ consul.network_interface[0].ip_address } ip=${ consul.network_interface[0].ip_address }
+${ consul["name"] } ansible_host=${ consul.network_interface[0].ip_address }
 %{ endfor ~}
 
 [dbs]

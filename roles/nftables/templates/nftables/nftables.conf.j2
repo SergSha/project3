@@ -61,6 +61,12 @@ table ip filter {
         chain DASHBOARDS_INP {
                 tcp dport 5601 ct state new counter accept
         }
+        chain PROMETHEUS_INP {
+                tcp dport 9090 ct state new counter accept
+        }
+        chain GRAFANA_INP {
+                tcp dport 3000 ct state new counter accept
+        }
 {% endif %}
 {% if inventory_hostname in groups['consuls'] %}
         chain CONSUL_INP {
@@ -102,6 +108,8 @@ table ip filter {
                 counter jump OPENSEARCH_INP
                 counter jump LOGSTASH_INP
                 counter jump DASHBOARDS_INP
+                counter jump PROMETHEUS_INP
+                counter jump GRAFANA_INP
 {% endif %}
 {% if inventory_hostname in groups['consuls'] %}
                 counter jump CONSUL_INP

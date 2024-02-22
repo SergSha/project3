@@ -31,12 +31,12 @@ locals {
 
   #subnet_cidrs  = ["10.10.50.0/24"]
   #subnet_name   = "my_vpc_subnet"
-  db_count     = "2"
-  ceph_count   = "3"
+  db_count     = "0"
+  ceph_count   = "0"
   be_count     = "2"
   lb_count     = "2"
-  consul_count = "3"
-  disk_count   = "3"
+  consul_count = "0"
+  disk_count   = "0"
   /*
   disk = {
     "web" = {

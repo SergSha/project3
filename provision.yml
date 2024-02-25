@@ -83,24 +83,24 @@
   become: true
   serial: 6
   roles:
-#    - { role: filebeat, tags: filebeat_tag }
+    - { role: filebeat, tags: filebeat_tag }
     - { role: node_exporter, tags: node_exporter_tag }
 
-#- name: Opensearch installation & configuration
-#  hosts: os_cluster
-#  gather_facts: true
-#  become: true
-#  serial: 6
-#  roles:
-#    - { role: opensearch, tags: opensearch_tag }
+- name: Opensearch installation & configuration
+  hosts: os_cluster
+  gather_facts: true
+  become: true
+  serial: 6
+  roles:
+    - { role: opensearch, tags: opensearch_tag }
 
-#- name: Opensearch dashboards installation & configuration
-#  hosts: dashboards
-#  gather_facts: true
-#  become: true
-#  serial: 6
-#  roles:
-#    - { role: dashboards, tags: dashboards_tag }
+- name: Opensearch dashboards installation & configuration
+  hosts: dashboards
+  gather_facts: true
+  become: true
+  serial: 6
+  roles:
+    - { role: dashboards, tags: dashboards_tag }
 
 - name: Prometheus installation & configuration
   hosts: prometheus

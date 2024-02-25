@@ -47,7 +47,7 @@
     state: restarted
 
 # UPDATE global_variables SET variable_value='false' WHERE variable_name='admin-hash_passwords';
-- name: UPDATE global_variables SET variable_value='false' WHERE variable_name='admin-hash_passwords';
+- name: Disable admin-hash_passwords, because Percona XtraDB Cluster uses caching_sha2_password
   ansible.builtin.shell: >
     mysql -h 127.0.0.1 -P 6032 -e "{{ item }}"
   loop:

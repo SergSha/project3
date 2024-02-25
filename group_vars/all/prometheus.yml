@@ -2,7 +2,7 @@
 # Prometheus
 prometheus_version: 2.50.0
 go_arch: amd64
-target_ip: "{% for host in groups.all %}'{{ hostvars[host].ansible_host }}:9100',{% endfor %}"
+target_ip: "{% for host in groups.all %}'{{ hostvars[host].ansible_host }}:9100'{% if not loop.last %},{% endif %}{% endfor %}"
 
 prometheus_config_dir: /etc/prometheus
 prometheus_db_dir: /var/lib/prometheus
@@ -20,11 +20,3 @@ prometheus_skip_install: false
 #  tls_server_config: {}
 #  http_server_config: {}
 #  basic_auth_users: {}
-
-# Grafana
-grafana_version: 10.3.3-1
-grafana_arch: x86_64
-
-## Node_exporter
-#node_exporter_version: 1.7.0
-#node_exporter_db_dir: /home/node_exporter

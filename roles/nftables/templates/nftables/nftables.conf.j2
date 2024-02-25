@@ -75,7 +75,7 @@ table ip filter {
         }
 {% endif %}
         chain NODE_EXPORTER_INP {
-                tcp dport 9100 ct state new counter accept
+                ip saddr {{ subnet_cidrs }} tcp dport 9100 ct state new counter accept
         }
         chain INPUT {
                 type filter hook input priority filter; policy drop;

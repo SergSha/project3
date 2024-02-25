@@ -1,7 +1,7 @@
 ---
 # Define root password for percona server
 mysql_root_user: root
-mysql_root_password: root@Otus1234
+mysql_root_pass: root@Otus1234
 
 ## Define replica user for percona server
 #mysql_repl_user: repl

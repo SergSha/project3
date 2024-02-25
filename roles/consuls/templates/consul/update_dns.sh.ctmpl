@@ -2,7 +2,7 @@
 
 TOKEN="{{ token }}"
 ORG="{{ org }}"
-DOMAIN="{{ domain }}"
+DOMAIN="{{ domain_name }}"
 
 RECS_ADD="{% raw %}{{- range service "balancer" }}{{ .ServiceTaggedAddresses.wan.Address }} {{ end }}{% endraw %}"
 

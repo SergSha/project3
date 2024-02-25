@@ -1,4 +1,7 @@
 ---
+- name: Include configure selinux
+  include_tasks: selinux.yml
+
 # tasks file for prometheus
 
 #- name: Gather variables for each operating system
@@ -10,11 +13,6 @@
 #    - "{{ ansible_os_family | lower }}.yml"
 
 #- include: preflight.yml
-
-- name: Put SELinux in permissive mode, logging actions that would be blocked.
-  ansible.posix.selinux:
-    policy: targeted
-    state: permissive
 
 - name: Include install prometheus
   include_tasks: prometheus.yml

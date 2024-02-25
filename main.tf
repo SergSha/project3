@@ -31,12 +31,12 @@ locals {
 
   #subnet_cidrs  = ["10.10.50.0/24"]
   #subnet_name   = "my_vpc_subnet"
-  db_count     = "0"
-  ceph_count   = "0"
+  db_count     = "2"
+  ceph_count   = "3"
   be_count     = "2"
   lb_count     = "2"
-  consul_count = "0"
-  disk_count   = "0"
+  consul_count = "3"
+  disk_count   = "3"
   /*
   disk = {
     "web" = {
@@ -376,6 +376,15 @@ resource "yandex_lb_network_load_balancer" "web-lb" {
   listener {
     name = "opensearch-dashboard-listener"
     port = 5601
+    external_address_spec {
+      ip_version = "ipv4"
+      address    = yandex_vpc_address.lbaddr.external_ipv4_address[0].address
+    }
+  }
+  
+  listener {
+    name = "grafana-listener"
+    port = 3000
     external_address_spec {
       ip_version = "ipv4"
       address    = yandex_vpc_address.lbaddr.external_ipv4_address[0].address

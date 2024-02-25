@@ -96,12 +96,12 @@
     - "LOAD MYSQL SERVERS TO RUNTIME;"
     - "SAVE MYSQL SERVERS TO DISK;"
 
-# INSERT INTO mysql_users (username,password) VALUES ('web_db_user','web_db_pass');
-- name: Add user web_db_user to proxysql 
+# INSERT INTO mysql_users (username,password) VALUES ('grafana_db_user','grafana_db_pass');
+- name: Add user grafana_db_user to proxysql 
   ansible.builtin.shell: >
     mysql -h 127.0.0.1 -P 6032 -e "{{ item }}"
   loop:
-    - "INSERT INTO mysql_users (username,password) VALUES ('{{ web_db_user }}','{{ web_db_pass }}');"
+    - "INSERT INTO mysql_users (username,password) VALUES ('{{ grafana_db_user }}','{{ grafana_db_pass }}');"
 
 # LOAD MYSQL USERS TO RUNTIME;
 # SAVE MYSQL USERS TO DISK;

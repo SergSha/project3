@@ -6,20 +6,20 @@
   tasks:
     - name: Set hostname
       ansible.builtin.hostname:
-        name: "{{ inventory_hostname }}.{{ domain }}"
+        name: "{{ inventory_hostname }}.{{ domain_name }}"
 
     - name: Add my own IP address to /etc/hosts instead localhost
       ansible.builtin.replace:
         path: "/etc/hosts"
         regexp: '^127\.0\.0\.1(\s+){{ inventory_hostname }}(\s+){{ inventory_hostname }}.*'
-        replace: "{{ ansible_host }} {{ inventory_hostname }}.{{ domain }} {{ inventory_hostname }}"
+        replace: "{{ ansible_host }} {{ inventory_hostname }}.{{ domain_name }} {{ inventory_hostname }}"
 
     - name: Hosts | populate inventory into hosts file
       ansible.builtin.blockinfile:
         dest: /etc/hosts
         block: |-
           {% for item in groups['all'] %}
-          {{ hostvars[item]['ansible_host'] }} {{ item }}.{{ domain }} {{ item }}
+          {{ hostvars[item]['ansible_host'] }} {{ item }}.{{ domain_name }} {{ item }}
           {% endfor %}
         state: present
         create: true
@@ -34,34 +34,34 @@
   roles:
     - { role: chrony, tags: chrony_tag }
 
-#- name: Percona XtraDB cluster installation & configuration
-#  hosts: dbs
-#  become: true
-#  serial: 6
-#  roles:
-#    - { role: dbs, tags: dbs_tag }
+- name: Percona XtraDB cluster installation & configuration
+  hosts: dbs
+  become: true
+  serial: 6
+  roles:
+    - { role: dbs, tags: dbs_tag }
 
-#- name: Ceph cluster installation
-#  hosts: cephs,bes
-#  become: true
-#  serial: 6
-#  roles:
-#    - { role: ceph_install, tags: ceph_install_tag }
+- name: Ceph cluster installation
+  hosts: cephs,bes
+  become: true
+  serial: 6
+  roles:
+    - { role: ceph_install, tags: ceph_install_tag }
 
-#- name: Ceph cluster configuration
-#  hosts: cephs
-#  become: true
-#  serial: 6
-#  roles:
-#    - { role: ceph_setup, tags: ceph_setup_tag }
+- name: Ceph cluster configuration
+  hosts: cephs
+  become: true
+  serial: 6
+  roles:
+    - { role: ceph_setup, tags: ceph_setup_tag }
 
-#- name: Web-servers installation & configuration
-#  hosts: bes
-#  become: true
-#  serial: 6
-#  roles:
-#    - { role: bes, tags: bes_tag }
-##    - { role: wordpress, tags: wordpress_tag }
+- name: Web-servers installation & configuration
+  hosts: bes
+  become: true
+  serial: 6
+  roles:
+    - { role: bes, tags: bes_tag }
+#    - { role: wordpress, tags: wordpress_tag }
 
 - name: Load Balancer installation & configuration
   hosts: lbs
@@ -70,12 +70,12 @@
   roles:
     - { role: lbs, tags: lbs_tag }
 
-#- name: Consul installation & configuration
-#  hosts: consuls,lbs,bes
-#  become: true
-#  serial: 6
-#  roles:
-#    - { role: consuls, tags: consul_tag }
+- name: Consul installation & configuration
+  hosts: consuls,lbs,bes
+  become: true
+  serial: 6
+  roles:
+    - { role: consuls, tags: consul_tag }
 
 - name: Filebeat & Node_exporter installation & configuration
   hosts: all
@@ -83,7 +83,7 @@
   become: true
   serial: 6
   roles:
-    - { role: filebeat, tags: filebeat_tag }
+#    - { role: filebeat, tags: filebeat_tag }
     - { role: node_exporter, tags: node_exporter_tag }
 
 #- name: Opensearch installation & configuration

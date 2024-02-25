@@ -17,6 +17,15 @@
     name: "https://dl.grafana.com/oss/release/grafana-{{ grafana_version }}.{{ grafana_arch }}.rpm"
     state: present
 
+#- name: Update grafana admin pass
+#  ansible.builtin.lineinfile:
+#    path: /etc/grafana/grafana.ini
+#    regexp: "{{ item.regexp }}"
+#    line: "{{ item.line }}"
+#  loop:
+#    - { regexp: '^;admin_user = ', line: 'admin_user = {{ grafana_admin_user }}' }
+#    - { regexp: '^;admin_password = ', line: 'admin_password = {{ grafana_admin_pass }}' }
+
 # cp grafana/prometheus.yaml.j2 /etc/grafana/provisioning/datasources/prometheus.yaml
 - name: Grafana | template grafana-prometheus config
   ansible.builtin.template:

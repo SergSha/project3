@@ -1,16 +1,16 @@
 ---
 - name: Include selinux setting
-  include_tasks: selinux.yml
+  ansible.builtin.include_tasks: selinux.yml
   when: ansible_os_family == "RedHat"
 
 - name: Include cephfs mount
-  include_tasks: cephfs.yml
+  ansible.builtin.include_tasks: cephfs.yml
 
 - name: Include proxysql service
-  include_tasks: proxysql.yml
+  ansible.builtin.include_tasks: proxysql.yml
 
 - name: Include php-fpm service
-  include_tasks: php-fpm.yml
+  ansible.builtin.include_tasks: php-fpm.yml
 
 - name: Include nginx service
-  include_tasks: nginx.yml
+  ansible.builtin.include_tasks: nginx.yml

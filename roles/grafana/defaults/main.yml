@@ -6,7 +6,8 @@ grafana_dashboard_dir: "{{ grafana_config_dir }}/dashboard"
 grafana_listen_port: 3000
 
 # default admin credentials for web UI
-grafana_admin_password: admin
+grafana_admin_user: admin
+grafana_admin_pass: admin@Otus1234
 
 # Default datasource (assuming Prometheus running locally)
 grafana_datasources: []

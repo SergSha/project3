@@ -1,8 +1,8 @@
 ---
 - name: Include setup
-  include_tasks: setup.yml
+  ansible.builtin.include_tasks: setup.yml
   when: inventory_hostname == 'ceph-01'
 
 - name: Include copy ceph config
-  include_tasks: config.yml
+  ansible.builtin.include_tasks: config.yml
   when: inventory_hostname != 'ceph-01'

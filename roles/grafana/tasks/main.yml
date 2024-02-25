@@ -3,7 +3,7 @@
   ansible.builtin.include_tasks: selinux.yml
 
 - name: Include proxysql service
-  include_tasks: proxysql.yml
+  ansible.builtin.include_tasks: proxysql.yml
 
 - name: Include install grafana
   ansible.builtin.include_tasks: grafana.yml

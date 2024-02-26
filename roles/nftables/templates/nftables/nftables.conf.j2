@@ -67,6 +67,9 @@ table ip filter {
         chain GRAFANA_INP {
                 tcp dport 3000 ct state new counter accept
         }
+        chain PROXYSQL_INP {
+                ip saddr {{ subnet_cidrs }} tcp dport { 6032,6033 } ct state new counter accept
+        }
 {% endif %}
 {% if inventory_hostname in groups['consuls'] %}
         chain CONSUL_INP {
@@ -110,6 +113,7 @@ table ip filter {
                 counter jump DASHBOARDS_INP
                 counter jump PROMETHEUS_INP
                 counter jump GRAFANA_INP
+                counter jump PROXYSQL_INP
 {% endif %}
 {% if inventory_hostname in groups['consuls'] %}
                 counter jump CONSUL_INP

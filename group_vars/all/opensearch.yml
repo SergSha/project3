@@ -1,6 +1,10 @@
 ---
 ## Common opensearch configuration parameters ##
 
+admin_password: "admin@Otus1234"
+kibanaserver_password: "kibana@Otus1234"
+logstash_password: "logstash@Otus1234"
+
 os_cluster_name: development-cluster
 
 # opensearch download

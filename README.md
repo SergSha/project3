@@ -83,10 +83,7 @@ cloud_id  = "..."
 Для того чтобы развернуть инфраструктуру, нужно выполнить следующую команду:
 ```bash
 terraform init && terraform apply -auto-approve && \
-sleep 60 && ansible-playbook ./provision.yml \
---extra-vars "admin_password=admin@Otus1234 \
-kibanaserver_password=kibana@Otus1234 \
-logstash_password=logstash@Otus1234"
+sleep 60 && ansible-playbook ./provision.yml
 ```
 
 По завершению команды получим данные outputs:
@@ -319,6 +316,8 @@ Consul-кластер был развёрнут на трёх нодах consul-
 В данном проекте также реализован мониторинг всех серверов инфраструктуры. Для этого на серверах lb-01 и lb-02 устанволены Prometheus. В качестве агентов для сбора данных на всех серверах установлены Node_exporter. Для визуализации используется Grafana, установленная и настроенная на двух серверах (lb-01, lb-02):
 
 <img src="pics/screen-008.png" alt="screen-008.png" />
+
+Для обеспечения высокой доступности Grafana на каждой ноде подключена к общей базе данных на MySQL кластере.
 
 
 #### Удаление развёрнутой инфраструктуры

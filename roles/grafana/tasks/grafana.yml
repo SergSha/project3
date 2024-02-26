@@ -46,7 +46,7 @@
     - prometheus.yml
     #- database.yml
 
-# sleep 60
+# sleep 120
 - name: Wait a two minute
   pause:
     seconds: 120

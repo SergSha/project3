@@ -291,10 +291,18 @@ Consul-кластер был развёрнут на трёх нодах consul-
 
 <img src="pics/screen-007.png" alt="screen-007.png" />
 
+<img src="pics/screen-008.png" alt="screen-008.png" />
+
 
 В данном проекте также реализован мониторинг всех серверов инфраструктуры. Для этого на серверах lb-01 и lb-02 устанволены Prometheus. В качестве агентов для сбора данных на всех серверах установлены Node_exporter. Для визуализации используется Grafana, установленная и настроенная на двух серверах (lb-01, lb-02):
 
-<img src="pics/screen-008.png" alt="screen-008.png" />
+<img src="pics/screen-009.png" alt="screen-009.png" />
+
+<img src="pics/screen-010.png" alt="screen-010.png" />
+
+<img src="pics/screen-011.png" alt="screen-011.png" />
+
+<img src="pics/screen-012.png" alt="screen-012.png" />
 
 Для обеспечения высокой доступности Grafana на каждой ноде подключена к общей базе данных на MySQL кластере.
 

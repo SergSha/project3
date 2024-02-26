@@ -93,39 +93,71 @@ Outputs:
 bes-info = {
   "be-01" = {
     "ip_address" = tolist([
-      "10.10.10.7",
-    ])
-    "nat_ip_address" = tolist([
-      "",
+      "10.10.10.29",
     ])
   }
   "be-02" = {
     "ip_address" = tolist([
-      "10.10.10.5",
-    ])
-    "nat_ip_address" = tolist([
-      "",
+      "10.10.10.6",
     ])
   }
 }
 cephs-info = {
   "ceph-01" = {
     "ip_address" = tolist([
-      "10.10.10.8",
-    ])
-    "nat_ip_address" = tolist([
-      "",
+      "10.10.10.13",
     ])
   }
   "ceph-02" = {
     "ip_address" = tolist([
-      "10.10.10.30",
-    ])
-    "nat_ip_address" = tolist([
-      "",
+      "10.10.10.5",
     ])
   }
   "ceph-03" = {
+    "ip_address" = tolist([
+      "10.10.10.45",
+    ])
+  }
+}
+consuls-info = {
+  "consul-01" = {
+    "ip_address" = tolist([
+      "10.10.10.26",
+    ])
+  }
+  "consul-02" = {
+    "ip_address" = tolist([
+      "10.10.10.28",
+    ])
+  }
+  "consul-03" = {
+    "ip_address" = tolist([
+      "10.10.10.15",
+    ])
+  }
+}
+dbs-info = {
+  "db-01" = {
+    "ip_address" = tolist([
+      "10.10.10.37",
+    ])
+  }
+  "db-02" = {
+    "ip_address" = tolist([
+      "10.10.10.11",
+    ])
+  }
+}
+lbs-info = {
+  "lb-01" = {
+    "ip_address" = tolist([
+      "10.10.10.35",
+    ])
+    "nat_ip_address" = tolist([
+      "84.252.140.234",
+    ])
+  }
+  "lb-02" = {
     "ip_address" = tolist([
       "10.10.10.3",
     ])
@@ -134,73 +166,20 @@ cephs-info = {
     ])
   }
 }
-consuls-info = {
-  "consul-01" = {
-    "ip_address" = tolist([
-      "10.10.10.23",
-    ])
-    "nat_ip_address" = tolist([
-      "",
-    ])
-  }
-  "consul-02" = {
-    "ip_address" = tolist([
-      "10.10.10.38",
-    ])
-    "nat_ip_address" = tolist([
-      "",
-    ])
-  }
-  "consul-03" = {
-    "ip_address" = tolist([
-      "10.10.10.24",
-    ])
-    "nat_ip_address" = tolist([
-      "",
-    ])
-  }
-}
-dbs-info = {
-  "db-01" = {
-    "ip_address" = tolist([
-      "10.10.10.26",
-    ])
-    "nat_ip_address" = tolist([
-      "",
-    ])
-  }
-  "db-02" = {
-    "ip_address" = tolist([
-      "10.10.10.32",
-    ])
-    "nat_ip_address" = tolist([
-      "",
-    ])
-  }
-}
-lbs-info = {
-  "lb-01" = {
-    "ip_address" = tolist([
-      "10.10.10.39",
-    ])
-    "nat_ip_address" = tolist([
-      "158.160.10.39",
-    ])
-  }
-  "lb-02" = {
-    "ip_address" = tolist([
-      "10.10.10.36",
-    ])
-    "nat_ip_address" = tolist([
-      "",
-    ])
-  }
-}
 loadbalancer-info = {
+  "grafana-listener" = {
+    "ip_address" = toset([
+      {
+        "address" = "51.250.110.60"
+        "ip_version" = "ipv4"
+      },
+    ])
+    "port" = 3000
+  }
   "opensearch-dashboard-listener" = {
     "ip_address" = toset([
       {
-        "address" = "158.160.138.160"
+        "address" = "51.250.110.60"
         "ip_version" = "ipv4"
       },
     ])
@@ -209,7 +188,7 @@ loadbalancer-info = {
   "web-listener" = {
     "ip_address" = toset([
       {
-        "address" = "158.160.138.160"
+        "address" = "51.250.110.60"
         "ip_version" = "ipv4"
       },
     ])

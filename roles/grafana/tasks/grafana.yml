@@ -46,9 +46,10 @@
     - prometheus.yml
     #- database.yml
 
-- name: Wait a minute
+# sleep 60
+- name: Wait a two minute
   pause:
-    seconds: 30
+    seconds: 120
 
 # systemctl enable --now grafana-server
 - name: Grafana | ensure grafana service is started and enabled
@@ -57,3 +58,4 @@
     name: grafana-server
     state: restarted
     enabled: true
+  ignore_errors: true

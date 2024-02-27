@@ -17,6 +17,14 @@
     name: "https://dl.grafana.com/oss/release/grafana-{{ grafana_version }}.{{ grafana_arch }}.rpm"
     state: present
 
+# systemctl enable --now grafana-server
+- name: Grafana | ensure grafana service is started and enabled
+  ansible.builtin.systemd:
+    daemon_reload: true
+    name: grafana-server
+    state: restarted
+    enabled: true
+
 #- name: Update grafana admin user and pass
 #  ansible.builtin.lineinfile:
 #    path: /etc/grafana/grafana.ini
@@ -45,17 +53,4 @@
   loop:
     - prometheus.yml
     #- database.yml
-
-# sleep 120
-- name: Wait a two minute
-  pause:
-    seconds: 120
-
-# systemctl enable --now grafana-server
-- name: Grafana | ensure grafana service is started and enabled
-  ansible.builtin.systemd:
-    daemon_reload: true
-    name: grafana-server
-    state: restarted
-    enabled: true
-  ignore_errors: true
+  notify: restart_grafana

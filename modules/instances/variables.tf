@@ -50,13 +50,13 @@ variable "cpu" {
 
 variable "memory" {
   description = "VM RAM size"
-  default     = 2
+  default     = 4
   type        = number
 }
 
 variable "core_fraction" {
   description = "Core fraction, default 100%"
-  default     = 50
+  default     = 100
   type        = number
 }
 
